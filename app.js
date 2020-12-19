@@ -1,8 +1,13 @@
 'use strict'
+//goole info
+const directionsApiKey = 'AIzaSyDL9SmrUA5cTAo0fzKulFXi-7dQ7fUY4p8'; 
+const directionsURL = 'https://https://maps.googleapis.com/maps/api/directions/';
 
-const apiKey = 'yELpNbQFYO51691J7JRUfM7ouh0jVZWGdMjydZkq'; 
-const searchURL = 'https://developer.nps.gov/api/v1/parks';
+//yelp info
 
+const yelpApiKey = 'Bearer fc4X_XRlPOIHhGAQdo7P2eNLkg4VBPGzI7bG_bXW7URTT7dmJQahyvZkccHCnrUMYO_aUUxFY3YPpYjoJ_VZn5jf2FRE45Aka86raLPBylFNIhv5kH14YY3P9XndX3Yx';
+const yelpBusinessSearchURL = 'https://api.yelp.com/v3/businesses/search' 
+/* reviews = yelpBusinessURL + {business} + /reviews*/
 
 function formatQueryParams(params) {
   const queryItems = Object.keys(params)
@@ -29,18 +34,25 @@ function displayResults(responseJson) {
 };
 
 
-function getNatlParks(query, searchTerm) {
+function getBusinesses(query, searchTerm) {
   const inputLimit = $('#js-max-results').val();
+  const inputRadius = $('#js-max-radius').val(); //add html element
+  
   const params = {
-    api_key: apiKey,
-    q: query,
-    stateCode: searchTerm,
+    term: searchTerm,
+    location: '',
+    radius: inputRadius,
     limit: inputLimit
   };
+
   const queryString = formatQueryParams(params)
   const url = searchURL + '?' + queryString;
+  const options = {
+      headers: new Headers({
+          Authorization: yelpApiKey})
+  };
 
-  fetch(url)
+  fetch(url, options)
     .then(response => {
       if (response.ok) {
         return response.json();
@@ -56,9 +68,10 @@ function getNatlParks(query, searchTerm) {
 function watchForm() {
   $('form').submit(event => {
     event.preventDefault();
-    const searchTerm = $('#js-search-state').val();
+    const searchTerm = $('#js-search-business').val();
     const inputLimit = 10;
-    getNatlParks(searchTerm, inputLimit);
+    const inputRadius = 10;
+    getBusinesses(searchTerm, inputLimit);
   });
 }
 
