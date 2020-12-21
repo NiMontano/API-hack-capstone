@@ -6,7 +6,7 @@ const directionsURL = 'https://https://maps.googleapis.com/maps/api/directions/'
 //yelp info
 
 const yelpApiKey = 'Bearer fc4X_XRlPOIHhGAQdo7P2eNLkg4VBPGzI7bG_bXW7URTT7dmJQahyvZkccHCnrUMYO_aUUxFY3YPpYjoJ_VZn5jf2FRE45Aka86raLPBylFNIhv5kH14YY3P9XndX3Yx';
-const yelpBusinessSearchURL = 'https://api.yelp.com/v3/businesses/search' 
+const businessSearchURL = 'https://api.yelp.com/v3/businesses/search' 
 /* reviews = yelpBusinessURL + {business} + /reviews*/
 
 function formatQueryParams(params) {
@@ -34,35 +34,53 @@ function displayResults(responseJson) {
 };
 
 
-function getBusinesses(query, searchTerm) {
-  const inputLimit = $('#js-max-results').val();
-  const inputRadius = $('#js-max-radius').val(); //add html element
+function getBusinesses(searchTerm, inputLimit) {
+  //const inputLimit = $('#js-max-results').val();
+  const inputLocation = $('#js-max-location').val();
+  const inputRadius = $('#js-max-radius').val();
   
   const params = {
     term: searchTerm,
-    location: '',
-    radius: inputRadius,
+    location: inputLocation,
+    //radius: inputRadius,
     limit: inputLimit
   };
 
   const queryString = formatQueryParams(params)
-  const url = searchURL + '?' + queryString;
-  const options = {
-      headers: new Headers({
-          Authorization: yelpApiKey})
-  };
+  const url = businessSearchURL + '?' + queryString;
+
+const headers = new Headers();
+headers.append(/*'Authorization', 'Bearer fc4X_XRlPOIHhGAQdo7P2eNLkg4VBPGzI7bG_bXW7URTT7dmJQahyvZkccHCnrUMYO_aUUxFY3YPpYjoJ_VZn5jf2FRE45Aka86raLPBylFNIhv5kH14YY3P9XndX3Yx',*/ "Access-Control-Allow-Origin", "*");
+
+const init = {
+  method: 'GET',
+  headers
+};
+
+fetch(url, init)
+.then((response) => {
+  console.log(response.json()); // or .text() or .blob() ...
+})
+/*.then((text) => {
+  // text is the response body
+})
+.catch((e) => {
+  // error in e.message
+});
+
+
 
   fetch(url, options)
     .then(response => {
       if (response.ok) {
-        return response.json();
+        console.log(response.json());
       }
-      throw new Error(response.statusText);
+      //throw new Error(response.statusText);
     })
-    .then(responseJson => displayResults(responseJson))
+    /*.then(responseJson => displayResults(responseJson))
     .catch(err => {
       $('#js-error-message').text(`Something went wrong: ${err.message}`);
-    });
+    });*/
 }
 
 function watchForm() {
@@ -70,8 +88,8 @@ function watchForm() {
     event.preventDefault();
     const searchTerm = $('#js-search-business').val();
     const inputLimit = 10;
-    const inputRadius = 10;
-    getBusinesses(searchTerm, inputLimit);
+    //const inputRadius = 10;
+    getBusinesses(searchTerm, inputLimit, /*inputRadius*/);
   });
 }
 

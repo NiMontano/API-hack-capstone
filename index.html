@@ -6,21 +6,24 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Yelp Help</title>
     <link rel="shortcut icon" href="#">
-    <link rel="stylesheet" href="app.css">
+    <link rel="stylesheet" href="index.css">
 </head>
 <body>
     <div class="container">
         <h1>Yelp Help</h1>
 
         <form id="js-form">
-            <label for="js-search-business"></label>
-            <input type="text" name="js-search-business" id="js-search-business" required>
+            <label for="js-search-business">Search Business Name</label>
+            <input type="text" name="js-search-business" id="js-search-business" required><br>
 
-            <label for="js-max-radius">Search js-max-radius</label>
-            <input type="text" name="js-max-radius" id="js-max-radius">
+            <label for="js-max-location">Search Location</label>
+            <input type="text" name="js-max-location" id="js-max-location"><br>
 
-            <label for="js-max-results">Maximum results to return</label>
-            <input type="number" name="js-max-results" id="js-max-results" value="10">
+            <label for="js-max-radius">Search Radius</label>
+            <input type="text" name="js-max-radius" id="js-max-radius"><br>
+
+            <!--<label for="js-max-results">Maximum results to return</label>
+            <input type="number" name="js-max-results" id="js-max-results" value="10"><br>-->
 
             <input type="submit" value="Go!">
         </form>
